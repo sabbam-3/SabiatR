@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>SabiatR</PackageId>
+		<Version>2.0.0</Version>
+		<Authors>Saba Makharashvili</Authors>
+		<Company>Saba Makharashvili</Company>
+		<Product>SabiatR</Product>
+		<Description>SabiatR is a lightweight and flexible library for request handling in .NET applications. It supports pipeline behaviors like logging, validation, and authorization, built around the Mediator pattern.</Description>
+		<PackageTags>mediator;pipeline;request handling;dependency injection;dotnet;library;SabiatR</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/sabbam-3/SabiatR</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/sabbam-3/SabiatR</PackageProjectUrl>
+		<Copyright>© 2025 Saba Makharashvili</Copyright>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Added advanced pipeline behaviors, improved DI integration, and support for .NET 8.0.</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
