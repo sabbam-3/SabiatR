@@ -23,12 +23,12 @@ internal sealed class Sender(IServiceProvider serviceProvider) : ISender
 
         // Resolve the pipeline behaviors (if any)
         var behaviors = serviceProvider.GetServices(typeof(IPipelineBehavior<>).MakeGenericType(requestType))
-            .Cast<dynamic>()
+            .Cast<object>()
             .Reverse()
             .ToList();
 
         // Create a Func<Task> to invoke the handler
-        Func<Task> handle = () => 
+        Func<Task> handle = () =>
         {
             var result = handleMethod.Invoke(handler, [request, cancellationToken]);
             return result as Task ?? Task.FromException(new InvalidHandlerResultException(handler.GetType(), handleMethod.Name, result));
@@ -39,7 +39,20 @@ internal sealed class Sender(IServiceProvider serviceProvider) : ISender
         {
             // Capture the current 'next' function
             var next = handle;
-            handle = () => behavior.Handle((dynamic)request, next, cancellationToken); // Pass 'next' for chaining
+
+            var handleBehaviourMethod = behavior.GetType().GetMethod(nameof(IPipelineBehavior<IRequest>.Handle));
+
+            if (handleBehaviourMethod == null)
+            {
+                throw new HandlerNotFoundException(requestType, nameof(IRequestHandler<IRequest>.Handle));
+            }
+
+            handle = () =>
+            {
+                var result = handleBehaviourMethod.Invoke(behavior, [request, next, cancellationToken]);
+
+                return result as Task ?? Task.FromException(new InvalidHandlerResultException(next.GetType(), handleBehaviourMethod.Name, result));
+            };
         }
 
         // Execute the entire chain
@@ -65,7 +78,7 @@ internal sealed class Sender(IServiceProvider serviceProvider) : ISender
         // Resolve the pipeline behaviors (if any)
         var behaviors = serviceProvider.GetServices(typeof(IPipelineBehavior<,>)
             .MakeGenericType(requestType, typeof(TResponse)))
-            .Cast<dynamic>()
+            .Cast<object>()
             .Reverse()
             .ToList();
 
@@ -81,7 +94,20 @@ internal sealed class Sender(IServiceProvider serviceProvider) : ISender
         {
             // Capture the current 'next' function
             var next = handle;
-            handle = () => behavior.Handle((dynamic)request, next, cancellationToken);  // Pass 'next' for chaining
+
+            var handleBehaviourMethod = behavior.GetType().GetMethod(nameof(IPipelineBehavior<IRequest<TResponse>, TResponse>.Handle));
+
+            if (handleBehaviourMethod == null)
+            {
+                throw new HandlerNotFoundException(requestType, nameof(IRequestHandler<IRequest<TResponse>, TResponse>.Handle));
+            }
+
+            handle = () =>
+            {
+                var result = handleBehaviourMethod.Invoke(behavior, [request, next, cancellationToken]);
+
+                return result as Task<TResponse> ?? Task.FromException<TResponse>(new InvalidHandlerResultException(next.GetType(), handleBehaviourMethod.Name, result));
+            };
         }
 
         // Execute the entire chain
