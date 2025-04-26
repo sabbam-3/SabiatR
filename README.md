@@ -8,6 +8,12 @@ With SabiatR, you can structure your application to keep it clean, maintainable,
 🚀 Features
 Request Handling: Simplifies sending and handling of commands and queries in your application.
 
+This project supports the use of internal classes for:
+
+IRequestHandler<TRequest, TResponse> command and query handlers
+
+IPipelineBehavior<TRequest, TResponse> middleware-style behaviors
+
 Pipeline Behaviors: Supports adding middleware-style behaviors (such as logging, validation, and authorization) to requests at various stages of processing.
 
 Flexible and Extendable: Easily extendable to accommodate custom logic and supports both synchronous and asynchronous operations.
