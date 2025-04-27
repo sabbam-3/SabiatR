@@ -5,11 +5,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>SabiatR</PackageId>
-		<Version>3.0.0</Version>
+		<Version>3.1.0</Version>
 		<Authors>Saba Makharashvili</Authors>
 		<Company>Saba Makharashvili</Company>
 		<Product>SabiatR</Product>
-		<Description>SabiatR is a lightweight and flexible library for request handling in .NET applications. It supports pipeline behaviors like logging, validation, and authorization, built around the Mediator pattern.</Description>
+		<Description>SabiatR is a lightweight and flexible library for request handling in .NET applications. It supports pipeline behaviors like logging, validation, and authorization, publishing notifications, built around the Mediator pattern.</Description>
 		<PackageTags>mediator;pipeline;request handling;dependency injection;dotnet;library;SabiatR</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/sabbam-3/SabiatR</RepositoryUrl>
@@ -18,7 +18,7 @@
 		<PackageProjectUrl>https://github.com/sabbam-3/SabiatR</PackageProjectUrl>
 		<Copyright>© 2025 Saba Makharashvili</Copyright>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Added advanced pipeline behaviors, improved DI integration, and support for .NET 8.0.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added advanced pipeline behaviors, notification, request handlers, improved DI integration, and support for .NET 8.0.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
