@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SabiatR.Configurations;
+using SabiatR.Notifications;
 
 namespace SabiatR;
 
@@ -11,6 +12,8 @@ public static class DependencyInjection
     private static Type PipelineBehaviourType = typeof(IPipelineBehavior<>);
     private static Type PipelineBehaviourReturningType = typeof(IPipelineBehavior<,>);
 
+    private static Type NotificationHandlerType = typeof(INotificationHandler<>);
+
     public static IServiceCollection AddSabiatR(this IServiceCollection services, Action<SabiatRConfiguration> configure, ServiceLifetime lifetime = ServiceLifetime.Transient)
     {
         SabiatRConfiguration configuration = new SabiatRConfiguration();
@@ -18,18 +21,29 @@ public static class DependencyInjection
 
         services.AddTransient<ISender, Sender>();
 
+        services.AddTransient<IPublisher, Publisher>();
+
         foreach (var assembly in configuration.Assemblies)
         {
             var types = assembly.GetTypes()
                 .Where(t => !t.IsInterface && !t.IsAbstract);
 
-            // Register request handlers
+            // Register handlers
             foreach (var type in types)
             {
+                //register request handlers
                 foreach (var iface in type.GetInterfaces()
                              .Where(i => i.IsGenericType &&
                                  (i.GetGenericTypeDefinition() == RequestHandlerType ||
                                   i.GetGenericTypeDefinition() == RequestHandlerReturningType)))
+                {
+                    services.Add(new ServiceDescriptor(iface, type, lifetime));
+                }
+
+                //register notification handlers
+                foreach(var iface in type.GetInterfaces()
+                             .Where(i => i.IsGenericType &&
+                             (i.GetGenericTypeDefinition() == NotificationHandlerType)))
                 {
                     services.Add(new ServiceDescriptor(iface, type, lifetime));
                 }
