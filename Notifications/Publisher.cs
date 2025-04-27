@@ -5,7 +5,7 @@ namespace SabiatR.Notifications;
 
 internal sealed class Publisher(IServiceProvider serviceProvider) : IPublisher
 {
-    public async Task Publish(INotification notification, CancellationToken cancellationToken)
+    public async Task Publish(INotification notification, CancellationToken cancellationToken = default)
     {
         var notificationType = notification.GetType();
 
@@ -37,7 +37,7 @@ internal sealed class Publisher(IServiceProvider serviceProvider) : IPublisher
         }
     }
 
-    public async Task PublishAsync(INotification notification, CancellationToken cancellationToken)
+    public async Task PublishAsync(INotification notification, CancellationToken cancellationToken = default)
     {
         var notificationType = notification.GetType();
 
